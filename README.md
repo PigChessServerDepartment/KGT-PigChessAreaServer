@@ -38,6 +38,7 @@ export enum MsgId{
     GetGameAllLoadReady=24,
 }
 ```
+
 ## ErrorCode格式:
 ```typescript
 export enum ErrorDetail
@@ -112,42 +113,62 @@ export enum WebServerErrorCode{
     None=10086,
     YourGameRoomIsNull=10087,
 }
-
 ```
+
 ## 一些类型定义
+
+### PunishMent
 ```ts
 export enum PunishMent
 {
     None=0,
     Have=1,
 }
+```
 
+### PlayerLeaveStatus
+```ts
 export enum PlayerLeaveStatus
 {
     Online=0,
     NotOnline=1
 }
+```
 
+### PlayerLeaveSituation
+```ts
 export enum PlayerLeaveSituation
 {
     None=0,
     NotPrepare=1,
     RoomBreak=2
 }
+```
 
+### RedisPlayerType
+```ts
 //Redis数据记录类型
 export enum RedisPlayerType{
     WhenPlayingLeave="WhenPlayingLeave_",
     RandomQueue="RandomQueue_",
 }
+```
+
+### RedisRoomType
+```ts
 export enum RedisRoomType{
     RoomGameMessageList="RoomGameMessageList_",
 }
+```
 
-
+### RedisHashName
+```ts
 export enum RedisHashName{
 }
+```
 
+### PlayerCacheData
+```ts
 export interface PlayerCacheData{
     playername:string;
     nowroomname:string;
@@ -158,7 +179,10 @@ export interface PlayerCacheData{
     isplayer:boolean;
     punishment:PunishMent;
 }
+```
 
+### MatchType
+```ts
 export enum MatchType{
     oneVone=0,
     moreVmore=1,
@@ -168,815 +192,521 @@ export enum MatchType{
     default=5
 }
 ```
+# Req / Res 对照表
+## 对照表目录
 
-# Req / Res 对照表 
----
-
-<div style="display:flex; gap:20px;">
-
-  <div style="flex:1;">
-
-  ```ts
-  /// StressTest=888888
-  export interface StressTestDataReq {
-    id: MsgId;
-    playername: string;
-}
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// StressTest=888888
-  export interface StressTestDataRes {
-    id: MsgId;
-    playername: string;
-}
-  ```
-  </div>
-
-</div>
-
-
----
-
-<div style="display:flex; gap:20px;">
-
-  <div style="flex:1;">
-
-  ```ts
-  /// CreateRoom=0
-  export interface CreateRoomReq {
-    id: MsgId;
-    roomname: string;  // 房间名称
-    password: string;  // 房间密码
-}
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// CreateRoom=0
-  export interface CreateRoomRes {
-    id: MsgId;
-    error: ErrorCode;
-    roomname: string;
-}
-  ```
-  </div>
-
-</div>
-
+- [StressTest = 888888](#stresstest--888888)
+- [CreateRoom = 0](#createroom--0)
+- [ConnectRoom = 1](#connectroom--1)
+- [ChangeLocation = 2](#changelocation--2)
+- [GetAllLocation = 3](#getalllocation--3)
+- [GameStart = 4](#gamestart--4)
+- [GameMessage = 5](#gamemessage--5)
+- [GamePlayerLoadFinish = 6](#gameplayerloadfinish--6)
+- [GameEnd = 7](#gameend--7)
+- [GameRoomClose = 8](#gameroomclose--8)
+- [SetPlayerName = 9](#setplayername--9)
+- [GetRoomGameMessageList = 10](#getroomgamemessagelist--10)
+- [GetRoomGameMessageListItem = 11](#getroomgamemessagelistitem--11)
+- [ReConnectRoom = 12](#reconnectroom--12)
+- [SetRandomLeavePlayerManager = 13](#setrandomleaveplayermanager--13)
+- [RandomLeavePlayerManagerSendmsg = 14](#randomleaveplayermanagersendmsg--14)
+- [ObtainTimestamp = 15](#obtaintimestamp--15)
+- [OnePlayerLeave = 16](#oneplayerleave--16)
+- [RadomMatchRoomCreate = 17](#radommatchroomcreate--17)
+- [RadomMatchRoomPrepare = 18](#radommatchroomprepare--18)
+- [RandomMatch = 19](#randommatch--19)
+- [LeaveRoom = 20](#leaveroom--20)
+- [RandomMatchFail = 21](#randommatchfail--21)
+- [RadomMatchCancel = 22](#radommatchcancel--22)
+- [GameLoadReady = 23](#gameloadready--23)
+- [GetGameAllLoadReady = 24](#getgameallloadready--24)
+- [GetRoomGameMessageListInSave = 5001](#getroomgamemessagelistinsave--5001)
 
 ---
 
-<div style="display:flex; gap:20px;">
+### StressTest = 888888
 
-  <div style="flex:1;">
-
-  ```ts
-  /// ConnectRoom=1
-  export interface ConnectRoomReq {
-    id: MsgId;
-    roomname: string;
-    password: string;
+```ts
+export interface StressTestDataReq {
+  id: MsgId;
+  playername: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// ConnectRoom=1
-  export interface ConnectRoomRes {
-    id: MsgId;
-    error: ErrorCode;
-    roomname: string;
-    alllocation: [];
+```
+```ts
+export interface StressTestDataRes {
+  id: MsgId;
+  playername: string;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### CreateRoom = 0
 
-  <div style="flex:1;">
-
-  ```ts
-  /// ChangeLocation=2
-  export interface ChangeLocationReq {
-    id: MsgId;
-    playername: string;
-    nextlocation: number;
-    nowlocation: number;
-    value: number;
+```ts
+export interface CreateRoomReq {
+  id: MsgId;
+  roomname: string;  // 房间名称
+  password: string;  // 房间密码
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// ChangeLocation=2
-  export interface ChangeLocationRes {
-    id: MsgId;
-    error: ErrorCode;
-    playername: string;
-    nextlocation: number;
-    nowlocation: number;
-    value: number;
-    detail: ErrorDetail;
-    alllocation: [];
+```
+```ts
+export interface CreateRoomRes {
+  id: MsgId;
+  error: ErrorCode;
+  roomname: string;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### ConnectRoom = 1
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GetAllLocation=3
-  export interface GetAllLocationReq {
-    id: MsgId;
-    playername: string;
+```ts
+export interface ConnectRoomReq {
+  id: MsgId;
+  roomname: string;
+  password: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GetAllLocation=3
-  export interface GetAllLocationRes {
-    id: MsgId;
-    error: ErrorCode;
-    alllocation: [];
+```
+```ts
+export interface ConnectRoomRes {
+  id: MsgId;
+  error: ErrorCode;
+  roomname: string;
+  alllocation: [];
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### ChangeLocation = 2
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GameStart=4
-  export interface GameStartReq {
-    id: MsgId;
+```ts
+export interface ChangeLocationReq {
+  id: MsgId;
+  playername: string;
+  nextlocation: number;
+  nowlocation: number;
+  value: number;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GameStart=4
-  export interface GameStartRes {
-    id: MsgId;
-    error: ErrorCode;
+```
+```ts
+export interface ChangeLocationRes {
+  id: MsgId;
+  error: ErrorCode;
+  playername: string;
+  nextlocation: number;
+  nowlocation: number;
+  value: number;
+  detail: ErrorDetail;
+  alllocation: [];
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GetAllLocation = 3
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GameMessage=5
-  export interface GameMessageReq {
-    id: MsgId;
-    gamemessage: any;
+```ts
+export interface GetAllLocationReq {
+  id: MsgId;
+  playername: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GameMessage=5
-  export interface GameMessageRes {
-    id: MsgId;
-    error: ErrorCode;
-    gamemessage: any;
+```
+```ts
+export interface GetAllLocationRes {
+  id: MsgId;
+  error: ErrorCode;
+  alllocation: [];
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GameStart = 4
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GamePlayerLoadFinish=6
-  export interface GamePlayerLoadFinishReq {
-    id: MsgId;
-    value: number;
+```ts
+export interface GameStartReq {
+  id: MsgId;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GamePlayerLoadFinish=6
-  export interface GamePlayerLoadFinishRes {
-    id: MsgId;
-    error: ErrorCode;
-    valuesum: number;
+```
+```ts
+export interface GameStartRes {
+  id: MsgId;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GameMessage = 5
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GameEnd=7
-  export interface GameEndReq {
-    id: MsgId;
-    message: any;
+```ts
+export interface GameMessageReq {
+  id: MsgId;
+  gamemessage: any;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GameEnd=7
-  export interface GameEndRes {
-    id: MsgId;
-    error: ErrorCode;
+```
+```ts
+export interface GameMessageRes {
+  id: MsgId;
+  error: ErrorCode;
+  gamemessage: any;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GamePlayerLoadFinish = 6
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GameRoomClose=8
-  // 无Req
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GameRoomClose=8
-  export interface GameRoomCloseRes {
-    id: MsgId;
-    error: ErrorCode;
+```ts
+export interface GamePlayerLoadFinishReq {
+  id: MsgId;
+  value: number;
 }
-  ```
-  </div>
-
-</div>
-
+```
+```ts
+export interface GamePlayerLoadFinishRes {
+  id: MsgId;
+  error: ErrorCode;
+  valuesum: number;
+}
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GameEnd = 7
 
-  <div style="flex:1;">
-
-  ```ts
-  /// SetPlayerName=9
-  export interface SetPlayerNameReq {
-    id: MsgId;
-    playername: string;
+```ts
+export interface GameEndReq {
+  id: MsgId;
+  message: any;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// SetPlayerName=9
-  export interface SetPlayerNameRes {
-    id: MsgId;
-    havecache: boolean;
-    player_cache_data: PlayerCacheData | null;
-    error: ErrorCode;
+```
+```ts
+export interface GameEndRes {
+  id: MsgId;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GameRoomClose = 8
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GetRoomGameMessageList=10
-  export interface GetRoomGameMessageListReq {
-    id: MsgId;
-    playername: string;
+```ts
+// 无Req
+```
+```ts
+export interface GameRoomCloseRes {
+  id: MsgId;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GetRoomGameMessageList=10
-  export interface GetRoomGameMessageListRes {
-    id: MsgId;
-    room_gamemessage_list: Map<number, any> | undefined | null;
-    error: ErrorCode;
-}
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### SetPlayerName = 9
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GetRoomGameMessageListItem=11
-  export interface GetRoomGameMessageListItemReq {
-    id: MsgId;
-    playername: string;
-    list_item_id: number;
+```ts
+export interface SetPlayerNameReq {
+  id: MsgId;
+  playername: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GetRoomGameMessageListItem=11
-  export interface GetRoomGameMessageListItemRes {
-    id: MsgId;
-    room_gamemessage_list_item: any;
-    error: ErrorCode;
+```
+```ts
+export interface SetPlayerNameRes {
+  id: MsgId;
+  havecache: boolean;
+  player_cache_data: PlayerCacheData | null;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GetRoomGameMessageList = 10
 
-  <div style="flex:1;">
-
-  ```ts
-  /// ReConnectRoom=12
-  export interface ReConnectRoomReq {
-    id: MsgId;
-    roomname: string;
-    password: string;
+```ts
+export interface GetRoomGameMessageListReq {
+  id: MsgId;
+  playername: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// ReConnectRoom=12
-  export interface ReConnectRoomRes {
-    id: MsgId;
-    roomname: string;
-    error: ErrorCode;
+```
+```ts
+export interface GetRoomGameMessageListRes {
+  id: MsgId;
+  room_gamemessage_list: Map<number, any> | undefined | null;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GetRoomGameMessageListItem = 11
 
-  <div style="flex:1;">
-
-  ```ts
-  /// SetRandomLeavePlayerManager=13
-  // 无Req
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// SetRandomLeavePlayerManager=13
-  export interface SetRandomLeavePlayerManagerRes {
-    id: MsgId;
-    playername: string;
-    error: ErrorCode;
+```ts
+export interface GetRoomGameMessageListItemReq {
+  id: MsgId;
+  playername: string;
+  list_item_id: number;
 }
-  ```
-  </div>
-
-</div>
-
+```
+```ts
+export interface GetRoomGameMessageListItemRes {
+  id: MsgId;
+  room_gamemessage_list_item: any;
+  error: ErrorCode;
+}
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### ReConnectRoom = 12
 
-  <div style="flex:1;">
-
-  ```ts
-  /// RandomLeavePlayerManagerSendmsg=14
-  export interface RandomLeavePlayerManagerSendmsgReq {
-    id: MsgId;
-    gamemessage: any;
+```ts
+export interface ReConnectRoomReq {
+  id: MsgId;
+  roomname: string;
+  password: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// RandomLeavePlayerManagerSendmsg=14
-  export interface RandomLeavePlayerManagerSendmsgRes {
-    id: MsgId;
-    error: ErrorCode;
+```
+```ts
+export interface ReConnectRoomRes {
+  id: MsgId;
+  roomname: string;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### SetRandomLeavePlayerManager = 13
 
-  <div style="flex:1;">
-
-  ```ts
-  /// ObtainTimestamp=15
-  export interface ObtainTimestampReq {
-    id: MsgId;
-    yourtimestamp: number;
-    error: ErrorCode;
+```ts
+// 无Req
+```
+```ts
+export interface SetRandomLeavePlayerManagerRes {
+  id: MsgId;
+  playername: string;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// ObtainTimestamp=15
-  export interface ObtainTimestampRes {
-    id: MsgId;
-    yourtimestamp: number;
-    servertimestamp: number;
-    error: ErrorCode;
-}
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### RandomLeavePlayerManagerSendmsg = 14
 
-  <div style="flex:1;">
-
-  ```ts
-  /// OnePlayerLeave=16
-  // 无Req
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// OnePlayerLeave=16
-  export interface OnePlayerLeaveRes {
-    id: MsgId;
-    playername: string;
-    error: ErrorCode;
+```ts
+export interface RandomLeavePlayerManagerSendmsgReq {
+  id: MsgId;
+  gamemessage: any;
 }
-  ```
-  </div>
-
-</div>
-
+```
+```ts
+export interface RandomLeavePlayerManagerSendmsgRes {
+  id: MsgId;
+  error: ErrorCode;
+}
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### ObtainTimestamp = 15
 
-  <div style="flex:1;">
-
-  ```ts
-  /// RadomMatchRoomCreate=17
-  // 无Req
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// RadomMatchRoomCreate=17
-  export interface RadomMatchRoomCreateRes {
-    id: MsgId;
-    ownplayername: string;
-    allplayer: string[];
-    roomname: string;
-    password: string;
-    error: ErrorCode;
+```ts
+export interface ObtainTimestampReq {
+  id: MsgId;
+  yourtimestamp: number;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
+```ts
+export interface ObtainTimestampRes {
+  id: MsgId;
+  yourtimestamp: number;
+  servertimestamp: number;
+  error: ErrorCode;
+}
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### OnePlayerLeave = 16
 
-  <div style="flex:1;">
-
-  ```ts
-  /// RadomMatchRoomPrepare=18
-  export interface RadomMatchRoomPrepareReq {
-    id: MsgId;
-    playername: string;
-    error: ErrorCode;
+```ts
+// 无Req
+```
+```ts
+export interface OnePlayerLeaveRes {
+  id: MsgId;
+  playername: string;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// RadomMatchRoomPrepare=18
-  export interface RadomMatchRoomPrepareRes {
-    id: MsgId;
-    playername: string;
-    allplayer: string[];
-    roomname: string | null;
-    error: ErrorCode;
-}
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### RadomMatchRoomCreate = 17
 
-  <div style="flex:1;">
-
-  ```ts
-  /// RandomMatch=19
-  export interface RandomMatchReq {
-    id: MsgId;
-    matchtype: MatchType;
-    playername: string;
+```ts
+// 无Req
+```
+```ts
+export interface RadomMatchRoomCreateRes {
+  id: MsgId;
+  ownplayername: string;
+  allplayer: string[];
+  roomname: string;
+  password: string;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// RandomMatch=19
-  // 对应 Res 是 RadomMatchRoomCreateRes 上面已写
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### RadomMatchRoomPrepare = 18
 
-  <div style="flex:1;">
-
-  ```ts
-  /// LeaveRoom=20
-  export interface LeaveRoomReq {
-    id: MsgId;
-    playername: string;
-    situation: PlayerLeaveSituation;
+```ts
+export interface RadomMatchRoomPrepareReq {
+  id: MsgId;
+  playername: string;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// LeaveRoom=20
-  export interface LeaveRoomRes {
-    id: MsgId;
-    error: ErrorCode;
-    situation: PlayerLeaveSituation;
+```
+```ts
+export interface RadomMatchRoomPrepareRes {
+  id: MsgId;
+  playername: string;
+  allplayer: string[];
+  roomname: string | null;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### RandomMatch = 19
 
-  <div style="flex:1;">
-
-  ```ts
-  /// RandomMatchFail=21
-  // 无Req
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// RandomMatchFail=21
-  export interface RandomMatchFailRes {
-    id: MsgId;
-    error: ErrorCode;
-    match_queue: string[];
-    detail: ErrorDetail;
+```ts
+export interface RandomMatchReq {
+  id: MsgId;
+  matchtype: MatchType;
+  playername: string;
 }
-  ```
-  </div>
-
-</div>
-
+```
+```ts
+// 对应 Res 是 RadomMatchRoomCreateRes 上面已写
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### LeaveRoom = 20
 
-  <div style="flex:1;">
-
-  ```ts
-  /// RadomMatchCancel=22
-  export interface RandomMatchCancelReq {
-    id: MsgId;
-    playername: string;
+```ts
+export interface LeaveRoomReq {
+  id: MsgId;
+  playername: string;
+  situation: PlayerLeaveSituation;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// RadomMatchCancel=22
-  export interface RandomMatchCancelRes {
-    id: MsgId;
-    playername: string;
-    match_gameroom: ConnectRoomReq | null;
-    error: ErrorCode;
+```
+```ts
+export interface LeaveRoomRes {
+  id: MsgId;
+  error: ErrorCode;
+  situation: PlayerLeaveSituation;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### RandomMatchFail = 21
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GameLoadReady=23
-  export interface GameLoadReadyReq {
-    id: MsgId;
-    playername: string;
+```ts
+// 无Req
+```
+```ts
+export interface RandomMatchFailRes {
+  id: MsgId;
+  error: ErrorCode;
+  match_queue: string[];
+  detail: ErrorDetail;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GameLoadReady=23
-  export interface GameLoadReadyRes {
-    id: MsgId;
-    playername: string;
-    error: ErrorCode;
-}
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### RadomMatchCancel = 22
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GetGameAllLoadReady=24
-  export interface GetGameAllLoadReadyReq {
-    id: MsgId;
-    playername: string;
+```ts
+export interface RandomMatchCancelReq {
+  id: MsgId;
+  playername: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GetGameAllLoadReady=24
-  export interface GetGameAllLoadReadyRes {
-    id: MsgId;
-    is_all_ready: boolean;
-    allreadyplayer: string[];
-    error: ErrorCode;
+```
+```ts
+export interface RandomMatchCancelRes {
+  id: MsgId;
+  playername: string;
+  match_gameroom: ConnectRoomReq | null;
+  error: ErrorCode;
 }
-  ```
-  </div>
-
-</div>
-
+```
 
 ---
 
-<div style="display:flex; gap:20px;">
+### GameLoadReady = 23
 
-  <div style="flex:1;">
-
-  ```ts
-  /// GetRoomGameMessageListInSave=5001
-  export interface GetRoomGameMessageListInSaveReq {
-    id: MsgId;
-    roomname: string;
+```ts
+export interface GameLoadReadyReq {
+  id: MsgId;
+  playername: string;
 }
-  ```
-  </div>
-
-  <div style="flex:1;">
-
-  ```ts
-  /// GetRoomGameMessageListInSave=5001
-  export interface GetRoomGameMessageListInSaveRes {
-    id: MsgId;
-    room_gamemessage_list: Map<number, any> | undefined | null;
-    error: ErrorCode;
+```
+```ts
+export interface GameLoadReadyRes {
+  id: MsgId;
+  playername: string;
+  error: ErrorCode;
 }
-  ```
-  </div>
+```
 
-</div>
+---
+
+### GetGameAllLoadReady = 24
+
+```ts
+export interface GetGameAllLoadReadyReq {
+  id: MsgId;
+  playername: string;
+}
+```
+```ts
+export interface GetGameAllLoadReadyRes {
+  id: MsgId;
+  is_all_ready: boolean;
+  allreadyplayer: string[];
+  error: ErrorCode;
+}
+```
+
+---
+
+### GetRoomGameMessageListInSave = 5001
+
+```ts
+export interface GetRoomGameMessageListInSaveReq {
+  id: MsgId;
+  roomname: string;
+}
+```
+```ts
+export interface GetRoomGameMessageListInSaveRes {
+  id: MsgId;
+  room_gamemessage_list: Map<number, any> | undefined | null;
+  error: ErrorCode;
+}
+```
