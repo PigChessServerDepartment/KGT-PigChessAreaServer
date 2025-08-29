@@ -62,6 +62,7 @@ export enum WebServerErrorCode{
 }
 
 export enum GateServerErrorCode{
+    
     Fali=0,
     Success=1,
 }

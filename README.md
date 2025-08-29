@@ -47,6 +47,7 @@ export enum GateServerErrorCode{
 
 ## Req格式:
 ```typescript
+获取游戏房间时间暂存
 GetRoomGameMessageListInSave=5001
 export interface GetRoomGameMessageListInSaveReq
 {
