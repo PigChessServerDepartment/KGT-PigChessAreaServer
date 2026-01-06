@@ -560,13 +560,28 @@ export interface OnePlayerLeaveRes {
 // 无Req
 ```
 ```ts
-export interface RadomMatchRoomCreateRes {
-  id: MsgId;
-  ownplayername: string;
-  allplayer: string[];
-  roomname: string;
-  password: string;
-  error: ErrorCode;
+export interface RadomMatchRoomCreateRes
+{
+    id:MsgId;
+    ownplayername:string;
+    allplayer:string[];
+    roomname:string;
+    password:string;
+    random_match_player_msg:QueueNodeMsg[];
+    error:ErrorCode;
+}
+
+export class QueueNodeMsg
+{
+  public playername;
+  public match_type;
+  public PreMessage;
+  constructor(playername:string,match_type:MatchType,PreMessage:Map<string,any>)
+  {
+    this.playername=playername;
+    this.match_type=match_type;
+    this.PreMessage=PreMessage;
+  }
 }
 ```
 
@@ -596,10 +611,11 @@ export interface RadomMatchRoomPrepareRes {
 ### RandomMatch = 19
 
 ```ts
-export interface RandomMatchReq {
-  id: MsgId;
-  matchtype: MatchType;
-  playername: string;
+export interface RandomMatchReq
+{
+    matchtype:MatchType;
+    playername:string;
+    PreMessage:Map<string,any>|null;//由客户端自行定义，例如PreMessage.set('法术1'，'火球') PreMessage.set('角色1'，'S01')
 }
 ```
 ```ts
