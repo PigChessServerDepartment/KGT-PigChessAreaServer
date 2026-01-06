@@ -132,6 +132,7 @@ export class WorkerLogisticSystem
                         random_room.SetRadomRoomStatus(MatchType.oneVone)
                         random_room.AddPlayer(player_sessions[1],3,2);
                         random_room.GameStart();
+                        random_room.SetRadomRoomPlayerMessage(data.match_queue)
                     }
                     let allplayer:string[]=[];
                     for(let player_session of player_sessions)
@@ -144,6 +145,7 @@ export class WorkerLogisticSystem
                         allplayer:allplayer,
                         roomname:uuid.toString(),
                         password:uuid.toString(),
+                        random_match_player_msg:data.match_queue,
                         error:Model.ErrorCode.None}
                     for(let player_session of player_sessions)
                     {

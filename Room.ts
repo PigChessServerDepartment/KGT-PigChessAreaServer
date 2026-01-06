@@ -4,6 +4,7 @@ import * as Model from './Model';
 import { RoomCol } from "./RoomCol";
 import { PlayerCol } from "./PlayerCol";
 import { MatchType } from "./Worker/WorkerModel";
+import { QueueNodeMsg } from "./const";
 export class Room
 {
     public players:Player[]=[];
@@ -20,6 +21,7 @@ export class Room
     public gamestart=false;
     public room_gamemessage_list:Map<number,any>;
 
+    public radom_room_player_message:QueueNodeMsg[]=[];
     public radom_room_status:MatchType=MatchType.default;
 
     constructor(roomname:string,password:string,ower:PlayerSession,value:number,own_nowlocation:number)
@@ -33,6 +35,11 @@ export class Room
     GetRoomGameMessageList()
     {
         return this.room_gamemessage_list
+    }
+
+    SetRadomRoomPlayerMessage(msg:QueueNodeMsg[])
+    {
+        this.radom_room_player_message=msg
     }
 
     SetRadomRoomStatus(status:MatchType)

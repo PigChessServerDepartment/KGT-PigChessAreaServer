@@ -341,6 +341,7 @@ export interface RadomMatchRoomCreateRes
     allplayer:string[];
     roomname:string;
     password:string;
+    random_match_player_msg:QueueNodeMsg[];
     error:ErrorCode;
 }
 
