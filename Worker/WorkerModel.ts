@@ -1,4 +1,4 @@
-import { WorkerMsgType } from "../const";
+import { WorkerMsgType,QueueNodeMsg } from "../const";
 // import { MatchType } from "../Model";
 
 export enum MatchType{
@@ -17,5 +17,5 @@ export interface QueueMatchReq{
     id:WorkerMsgId;
     witch_worker:WorkerMsgType;
     match_type:MatchType;
-    match_queue:string[];
+    match_queue:QueueNodeMsg[];
 }

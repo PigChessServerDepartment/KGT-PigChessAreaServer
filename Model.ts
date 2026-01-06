@@ -1,6 +1,7 @@
 import { WebServerErrorCode } from "./ErrorCode";
 import { ErrorDetail } from "./ErrorDetail";
 import { MatchType } from "./Worker/WorkerModel";
+import {QueueNodeMsg} from "./const";
 
 export enum MsgId{
     StressTest=888888,
@@ -330,6 +331,7 @@ export interface RandomMatchReq
 {
     matchtype:MatchType;
     playername:string;
+    PreMessage:Map<string,any>|null;
 }
 ///随机匹配房间创建回复
 export interface RadomMatchRoomCreateRes
@@ -359,7 +361,7 @@ export interface RandomMatchFailRes
 {
     id:MsgId;
     error:ErrorCode;
-    match_queue:string[];
+    match_queue:QueueNodeMsg[];
     detail:ErrorDetail;
 }
 

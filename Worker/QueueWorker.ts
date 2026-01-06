@@ -13,7 +13,7 @@ import { QueueMatchReq, WorkerMsgId } from './WorkerModel';
 import { match } from 'assert';
 
 const flakeIdGen = new FlakeId();
-let oneVone_queue: Set<string> = new Set<string>();
+let oneVone_queue: Set<QueueNodeMsg> = new Set<QueueNodeMsg>();
 let moreVmore_queue: PlayerSession[] = [];
 let oneVmore_value1_queue: PlayerSession[] = [];
 let oneVmore_value3_queue: PlayerSession[] = [];
@@ -39,9 +39,9 @@ function processQueue() {
 
 async function oneVone_handle()
 {
-    let playername=RandomMatchSystem.getInstance().get_queue_a_1v1();
-    if(playername==undefined) return;
-
+    let playermessage=RandomMatchSystem.getInstance().get_queue_a_1v1();
+    if(playermessage==undefined) return;
+    let playername=playermessage.playername;
     // let playersession=PlayerSessionCol.getInstance().GetPlayerSession(playername);
     // if(playersession==undefined) return;
     if(await RedisMgr.getInstance().GetRedis(Model.RedisPlayerType.RandomQueue+playername)==null) 
@@ -50,7 +50,7 @@ async function oneVone_handle()
         return;
     }
             
-    oneVone_queue.add(playername);
+    oneVone_queue.add(playermessage);
     if(oneVone_queue.size>=2)
     {
         let tempqueue= await GetTempQueue(2);
@@ -119,7 +119,7 @@ async function oneVone_handle()
 
 async function GetTempQueue(size:number)
 {
-    let tempqueue:string[]=[];
+    let tempqueue:QueueNodeMsg[]=[];
     const iterator = oneVone_queue.values();
     for(let i=0;i<size;i++)
     {
@@ -137,7 +137,7 @@ async function GetTempQueue(size:number)
     return tempqueue;
 }
 
-function DeleteInQueue(tempqueue:string[])
+function DeleteInQueue(tempqueue:QueueNodeMsg[])
 {
     for(let i=0;i<tempqueue.length;i++)
     {
@@ -159,7 +159,7 @@ parentPort?.on('message', (message:WorkerMsgBaseNode) => {
     {
         case WorkerMsgType.QueueWorkerMsg:
             let queuenodemsg:QueueNodeMsg=WorkerBaseNodeSwitchFactory.getInstance().SwitchToAny(message) as QueueNodeMsg;
-            RandomMatchSystem.getInstance().add_to_queue(queuenodemsg.match_type,queuenodemsg.playername)
+            RandomMatchSystem.getInstance().add_to_queue(queuenodemsg.match_type,queuenodemsg)
             break;
     }
 });

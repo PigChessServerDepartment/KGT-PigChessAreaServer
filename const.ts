@@ -72,10 +72,12 @@ export class QueueNodeMsg
 {
   public playername;
   public match_type;
-  constructor(playername:string,match_type:MatchType)
+  public PreMessage;
+  constructor(playername:string,match_type:MatchType,PreMessage:Map<string,any>)
   {
     this.playername=playername;
     this.match_type=match_type;
+    this.PreMessage=PreMessage;
   }
 }
 

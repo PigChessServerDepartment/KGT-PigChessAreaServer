@@ -1,4 +1,4 @@
-import { QueueWorkerNode } from "../const";
+import { QueueWorkerNode,QueueNodeMsg } from "../const";
 import { MatchType } from "./WorkerModel";
 import { PlayerCol } from "../PlayerCol";
 import { PlayerSessionCol } from "../PlayerSessionCol";
@@ -73,7 +73,7 @@ export class WorkerLogisticSystem
         }
     }
 
-    ReturnMatchFail(player_sessions:PlayerSession[]=[],match_queue:string[]=[]):void
+    ReturnMatchFail(player_sessions:PlayerSession[]=[],match_queue:QueueNodeMsg[]=[]):void
     {
        for(let player_session of player_sessions)
        {
@@ -94,8 +94,9 @@ export class WorkerLogisticSystem
                     let player_sessions:PlayerSession[]=[];
                     let get_session_and_cache_success=true;
                     console.log("匹配1v1",data.match_queue)
-                    for(let playername of data.match_queue)
+                    for(let playermessage of data.match_queue)
                     {
+                        let playername=playermessage.playername
                         let player_session=PlayerSessionCol.getInstance().GetPlayerSession(playername);
                         let player_cache=await RedisMgr.getInstance().GetRedis(Model.RedisPlayerType.RandomQueue+playername);
                         console.log("get Model.RedisPlayerType.RandomQueue: ",playername)

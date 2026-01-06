@@ -347,6 +347,7 @@ export class LogisticSystem
             let SetNameStatus=con.CheckPlayerSessonSetName(data)
             if(SetNameStatus==true)
             {
+                //意外断连时的缓存记录
                 let playercache=await RedisMgr.getInstance().GetRedis(Model.RedisPlayerType.WhenPlayingLeave+data.playername)
                 if(playercache!=null)
                 {
@@ -606,10 +607,14 @@ export class LogisticSystem
             const data:Model.RandomMatchReq=msg
             let match_type:MatchType=data.matchtype
             let playername:string=data.playername
+            let PreMessage:Map<string,any>|null=data.PreMessage
             // RandomMatchSystem.getInstance().add_to_queue(match_type,playername)
-            queue_worker.send_message(new WorkerMsgBaseNode(WorkerMsgType.QueueWorkerMsg,new QueueNodeMsg(playername,match_type)))
-            console.log("set Model.RedisPlayerType.RandomQueue: ",playername," match_type:",match_type)
-            await RedisMgr.getInstance().SetRedisExpire(Model.RedisPlayerType.RandomQueue+con.playername,1,60)
+            if(PreMessage!=null)
+            {
+                queue_worker.send_message(new WorkerMsgBaseNode(WorkerMsgType.QueueWorkerMsg,new QueueNodeMsg(playername,match_type,PreMessage)))
+                console.log("set Model.RedisPlayerType.RandomQueue: ",playername," match_type:",match_type)
+                await RedisMgr.getInstance().SetRedisExpire(Model.RedisPlayerType.RandomQueue+con.playername,1,60)
+            }
         })
 
         this.RegWeb(Model.MsgId.RadomMatchCancel,async(msg:any,con:PlayerSession)=>{
